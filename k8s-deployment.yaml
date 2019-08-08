@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  labels:
+      app: web-app 
+      phase: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+        tier: backend
+        phase: test
+    spec:
+      containers:
+      - name: web-app-container
+        image: boomzero/night-watch:web-app
+        ports:
+        - containerPort: 3040
+        imagePullPolicy: Always
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "3040"
+        - name: WATCH_MANAGER_ADDRESS
+          value: "watch-manager-service:3030"
+
